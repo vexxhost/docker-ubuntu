@@ -4,23 +4,14 @@ on:
   schedule:
     - cron: "0 0 * * *"
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   scan:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-      packages: write
-      security-events: write
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # 0.30.0
+      - uses: vexxhost/github-actions/scan-image@main
         with:
           image-ref: ghcr.io/${{ github.repository_owner }}/ubuntu
-          ignore-unfixed: true
-          format: sarif
-          output: trivy-results.sarif
-      - uses: github/codeql-action/upload-sarif@1b549b9259bda1cb5ddde3b41741a82a2d15a841 # v3.28.13
-        if: always()
-        with:
-          sarif_file: trivy-results.sarif
