@@ -61,6 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: image
     permissions:
+      actions: read
       contents: write
       security-events: write
     steps:
