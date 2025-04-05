@@ -41,7 +41,7 @@ jobs:
           provenance: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-      - uses: winterjung/split@a211a1c46e35fcdc4097d59dd6282d4a9859651b # v2
+      - uses: winterjung/split@7f51d99e7cc1f147f6f99be75acf5e641930af88 # v2.1.0
         id: split
         with:
           msg: ${{ fromJSON(steps.build.outputs.metadata)['image.name'] }}
