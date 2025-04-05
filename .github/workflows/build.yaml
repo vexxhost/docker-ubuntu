@@ -19,6 +19,8 @@ jobs:
           project: h8rjlfhzg5
           platforms: linux/amd64,linux/arm64
           load: true
+          sbom: true
+          provenance: true
       - uses: aquasecurity/trivy-action@0.30.0
         with:
           image-ref: ${{ fromJSON(steps.build.outputs.metadata)['image.name'] }}

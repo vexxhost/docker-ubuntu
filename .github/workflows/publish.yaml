@@ -31,11 +31,14 @@ jobs:
       - uses: depot/build-push-action@v1
         id: build
         with:
-          project: h8rjlfhzg5
           context: .
+          project: h8rjlfhzg5
+          platforms: linux/amd64,linux/arm64
+          push: true
+          sbom: true
+          provenance: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          push: true
       - uses: aquasecurity/trivy-action@0.30.0
         with:
           image-ref: ${{ fromJSON(steps.build.outputs.metadata)['image.name'] }}
