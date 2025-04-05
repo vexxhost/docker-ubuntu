@@ -1,6 +1,7 @@
 name: publish
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -66,8 +67,7 @@ jobs:
       contents: write
       security-events: write
     steps:
-      - name: Scan image in a private registry
-        uses: aquasecurity/trivy-action@0.30.0
+      - uses: aquasecurity/trivy-action@0.30.0
         with:
           image-ref: ${{ needs.image.outputs.image_name }}
           format: github
