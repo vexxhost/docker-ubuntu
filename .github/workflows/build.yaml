@@ -10,9 +10,9 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: depot/setup-action@v1
-      - uses: depot/build-push-action@v1
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: depot/setup-action@b0b1ea4f69e92ebf5dea3f8713a1b0c37b2126a5 # v1
+      - uses: depot/build-push-action@636daae76684e38c301daa0c5eca1c095b24e780 # v1
         id: build
         with:
           context: .
@@ -21,19 +21,19 @@ jobs:
           load: true
           sbom: true
           provenance: true
-      - uses: winterjung/split@v2
+      - uses: winterjung/split@a211a1c46e35fcdc4097d59dd6282d4a9859651b # v2
         id: split
         with:
           msg: ${{ fromJSON(steps.build.outputs.metadata)['image.name'] }}
           separator: ","
-      - uses: aquasecurity/trivy-action@0.30.0
+      - uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # 0.30.0
         with:
           image-ref: ${{ steps.split.outputs._0 }}
           exit-code: '1'
           ignore-unfixed: true
           format: sarif
           output: trivy-results.sarif
-      - uses: github/codeql-action/upload-sarif@v3
+      - uses: github/codeql-action/upload-sarif@1b549b9259bda1cb5ddde3b41741a82a2d15a841 # v3
         if: always()
         with:
           sarif_file: trivy-results.sarif
