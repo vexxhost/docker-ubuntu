@@ -37,6 +37,11 @@ jobs:
       - uses: aquasecurity/trivy-action@0.30.0
         with:
           image-ref: ${{ fromJSON(steps.build.outputs.metadata)['image.name'] }}
-          format: 'table' # Output format (table, json, template, sarif, cyclonedx, spdx, spdx-json, github, cosign-vuln)
           exit-code: '1'
           ignore-unfixed: true
+          format: sarif
+          output: trivy-results.sarif
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-results.sarif
