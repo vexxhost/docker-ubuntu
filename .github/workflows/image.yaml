@@ -25,6 +25,7 @@ jobs:
             type=edge,suffix={{date 'X'}}
       - uses: depot/setup-action@v1
       - uses: depot/build-push-action@v1
+        id: build
         with:
           context: .
           project: h8rjlfhzg5
@@ -33,3 +34,9 @@ jobs:
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      - uses: aquasecurity/trivy-action@0.30.0
+        with:
+          image-ref: ${{ fromJSON(steps.build.outputs.metadata)['image.name'] }}
+          format: 'table' # Output format (table, json, template, sarif, cyclonedx, spdx, spdx-json, github, cosign-vuln)
+          exit-code: '1'
+          ignore-unfixed: true
