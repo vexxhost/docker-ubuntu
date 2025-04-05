@@ -21,7 +21,7 @@ jobs:
           tags: |
             type=sha
             type=edge
-            type=edge,suffix={{date 'X'}}
+            type=edge,suffix=-{{date 'X'}}
       - uses: depot/setup-action@v1
       - uses: docker/login-action@v3
         with:
@@ -39,9 +39,14 @@ jobs:
           provenance: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      - uses: winterjung/split@v2
+        id: split
+        with:
+          msg: ${{ fromJSON(steps.build.outputs.metadata)['image.name'] }}
+          separator: ","
       - uses: aquasecurity/trivy-action@0.30.0
         with:
-          image-ref: ${{ fromJSON(steps.build.outputs.metadata)['image.name'] }}
+          image-ref: ${{ steps.split.outputs._0 }}
           ignore-unfixed: true
           format: sarif
           output: trivy-results.sarif
@@ -50,7 +55,7 @@ jobs:
         with:
           sarif_file: trivy-results.sarif
     outputs:
-      image_name: ${{ fromJSON(steps.build.outputs.metadata)['image.name'] }}
+      image_name: ${{ steps.split.outputs._0 }}
 
   sbom:
     runs-on: ubuntu-latest

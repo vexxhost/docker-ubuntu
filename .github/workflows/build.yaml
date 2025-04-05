@@ -21,9 +21,14 @@ jobs:
           load: true
           sbom: true
           provenance: true
+      - uses: winterjung/split@v2
+        id: split
+        with:
+          msg: ${{ fromJSON(steps.build.outputs.metadata)['image.name'] }}
+          separator: ","
       - uses: aquasecurity/trivy-action@0.30.0
         with:
-          image-ref: ${{ fromJSON(steps.build.outputs.metadata)['image.name'] }}
+          image-ref: ${{ steps.split.outputs._0 }}
           exit-code: '1'
           ignore-unfixed: true
           format: sarif
