@@ -29,6 +29,7 @@ jobs:
           context: .
           project: h8rjlfhzg5
           platforms: linux/amd64,linux/arm64
+          load: true
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
