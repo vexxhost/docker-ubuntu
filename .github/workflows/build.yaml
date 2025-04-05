@@ -1,10 +1,7 @@
-name: image
+name: build
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
 
 jobs:
   build:
@@ -12,17 +9,8 @@ jobs:
     permissions:
       contents: read
       id-token: write
-      packages: write
     steps:
       - uses: actions/checkout@v4
-      - uses: docker/metadata-action@v5
-        id: meta
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=sha
-            type=edge
-            type=edge,suffix={{date 'X'}}
       - uses: depot/setup-action@v1
       - uses: depot/build-push-action@v1
         id: build
@@ -31,9 +19,6 @@ jobs:
           project: h8rjlfhzg5
           platforms: linux/amd64,linux/arm64
           load: true
-          push: ${{ github.event_name == 'push' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
       - uses: aquasecurity/trivy-action@0.30.0
         with:
           image-ref: ${{ fromJSON(steps.build.outputs.metadata)['image.name'] }}
