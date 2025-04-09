@@ -1,4 +1,4 @@
-FROM docker.io/library/ubuntu:22.04@sha256:26dd6b0fe5f604e7a2449677d34601c4fb93c191ddb71b294ccb8330f8222b32
+FROM docker.io/library/ubuntu:22.04@sha256:d80997daaa3811b175119350d84305e1ec9129e1799bba0bd1e3120da3ff52c3
 RUN \
   --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
